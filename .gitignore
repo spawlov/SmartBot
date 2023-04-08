@@ -1,3 +1,4 @@
 /.idea
 /venv
 /.env
+/application_default_credentials.json
