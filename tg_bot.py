@@ -4,8 +4,13 @@ import os
 import requests
 from dotenv import load_dotenv, find_dotenv
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, \
-    CallbackContext
+from telegram.ext import (
+    Updater,
+    CommandHandler,
+    MessageHandler,
+    Filters,
+    CallbackContext,
+)
 
 from extensions import detect_intent_texts, get_intents_list, create_intent
 
