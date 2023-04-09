@@ -1,11 +1,13 @@
-import os
-import uuid
 
+import os
+
+import requests
 from dotenv import load_dotenv, find_dotenv
-from google.cloud import dialogflow
-from telegram import Update, ForceReply
+from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, \
     CallbackContext
+
+from extensions import detect_intent_texts, get_intents_list, create_intent
 
 
 def start(update: Update, context: CallbackContext) -> None:
@@ -16,24 +18,27 @@ def start(update: Update, context: CallbackContext) -> None:
 
 
 def echo(update: Update, context: CallbackContext) -> None:
-    project_id = os.getenv('PROJECT_ID')
-    session_client = dialogflow.SessionsClient()
-    session = session_client.session_path(project_id, str(uuid.uuid4()))
-    text_input = dialogflow.TextInput(
-        text=update.message.text,
-        language_code='ru-RU'
+    update.message.reply_text(
+        detect_intent_texts(os.getenv('PROJECT_ID'), update.message.text)
     )
-    query_input = dialogflow.QueryInput(text=text_input)
-    response = session_client.detect_intent(
-        request={"session": session, "query_input": query_input}
-    )
-    answer = response.query_result.fulfillment_text
-    update.message.reply_text(answer)
 
 
 def main() -> None:
     load_dotenv(find_dotenv())
     tg_bot = Updater(os.getenv('TG_BOT_TOKEN'))
+    project_id = os.getenv('PROJECT_ID')
+
+    intents_list = get_intents_list(project_id)
+    questions = requests.get(os.getenv('QUESTIONS_URL')).json()
+    for display_name, items in questions.items():
+        if display_name not in intents_list:
+            result = create_intent(
+                project_id,
+                display_name,
+                items['questions'],
+                items['answer']
+            )
+            # print(f'Intent created: {result}')
 
     dispatcher = tg_bot.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
