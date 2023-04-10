@@ -9,13 +9,13 @@ from extensions import detect_intent_texts
 
 
 def echo(event, vk_api):
-    answer = detect_intent_texts(os.getenv('PROJECT_ID'), event.text)
-    vk_api.messages.send(
-        user_id=event.user_id,
-        # message=event.text,
-        message=answer,
-        random_id=random.randint(1, 1000)
-    )
+    answer = detect_intent_texts(os.getenv('PROJECT_ID'), event.text, bot='vk')
+    if len(answer) > 0:
+        vk_api.messages.send(
+            user_id=event.user_id,
+            message=answer,
+            random_id=random.randint(1, 1000)
+        )
 
 
 def main():

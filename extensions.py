@@ -4,7 +4,7 @@ from google.cloud import dialogflow
 from google.cloud.dialogflow_v2 import Intent
 
 
-def detect_intent_texts(project_id: str, text: str) -> str:
+def detect_intent_texts(project_id: str, text: str, bot: str = 'tg') -> str:
     session_client = dialogflow.SessionsClient()
     session = session_client.session_path(project_id, str(uuid.uuid4()))
     text_input = dialogflow.TextInput(
@@ -24,6 +24,8 @@ def detect_intent_texts(project_id: str, text: str) -> str:
             'query_input': query_input,
         }
     )
+    if bot == 'vk' and response.query_result.intent.is_fallback:
+        return ''
     return response.query_result.fulfillment_text
 
 
