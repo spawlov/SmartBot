@@ -68,7 +68,9 @@ def main() -> None:
             MessageHandler(Filters.text & ~Filters.command, echo)
         )
         tg_bot.start_polling()
+        logger.info('Telegram bot is running!')
         tg_bot.idle()
+        logger.info('Telegram bot is stopped!')
 
 
 if __name__ == '__main__':
