@@ -14,19 +14,7 @@ def echo(event, vk_api):
     )
 
 
-# def main():
-#     load_dotenv(find_dotenv())
-#     vk_session = vk.VkApi(token=os.getenv('VK_TOKEN'))
-#     vk_api = vk_session.get_api()
-#     longpoll = VkLongPoll(vk_session)
-#
-#     for event in longpoll.listen():
-#         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-#             echo(event, vk_api)
-
-
-if __name__ == '__main__':
-    # main()
+def main():
     load_dotenv(find_dotenv())
     vk_session = vk.VkApi(token=os.getenv('VK_TOKEN'))
     vk_api = vk_session.get_api()
@@ -35,3 +23,7 @@ if __name__ == '__main__':
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
             echo(event, vk_api)
+
+
+if __name__ == '__main__':
+    main()
