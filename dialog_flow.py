@@ -1,7 +1,10 @@
+import os
 import uuid
 
+import requests
 from google.cloud import dialogflow
 from google.cloud.dialogflow_v2 import Intent
+from loguru import logger
 
 
 def detect_intent_texts(project_id: str, text: str, bot: str = 'tg') -> str:
@@ -77,8 +80,33 @@ def create_intent(
         }
     )
     return intents_client.create_intent(
-        request=
-        {
-            'parent': parent, 'intent': intent
+        request={
+            'parent': parent,
+            'intent': intent,
         }
     )
+
+
+def intents_update() -> None:
+    project_id = os.getenv('PROJECT_ID')
+    intents_list = get_intents_list(project_id)
+    try:
+        response = requests.get(os.getenv('QUESTIONS_URL'))
+        response.raise_for_status()
+    except (
+            requests.exceptions.ReadTimeout,
+            requests.exceptions.ConnectionError,
+            requests.exceptions.HTTPError,
+    ) as e:
+        logger.error(e)
+    else:
+        questions = response.json()
+        for display_name, items in questions.items():
+            if display_name not in intents_list:
+                result = create_intent(
+                    project_id,
+                    display_name,
+                    items['questions'],
+                    items['answer']
+                )
+                logger.info(f'Intent created: {result}')
