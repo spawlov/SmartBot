@@ -47,7 +47,7 @@ def get_vk_session() -> [Response, None]:
 
 def vk_failed_handler(response: Response, params: dict) -> [dict, None]:
     failed = response.json()
-    logger.warning(failed)
+    logger.info(failed)
     vk_session = get_vk_session()
     if not vk_session:
         logger.error('VK session failed!')
