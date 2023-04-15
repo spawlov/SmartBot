@@ -7,7 +7,7 @@ from loguru import logger
 from requests import Response
 import vk_api as vk
 
-from dialog_flow import detect_intent_texts
+from modules.dialog_flow import detect_intent_texts
 
 
 def vk_echo(peer_id: int, message: str) -> None:

@@ -10,7 +10,7 @@ from telegram.ext import (
     Filters
 )
 
-from dialog_flow import detect_intent_texts
+from modules.dialog_flow import detect_intent_texts
 
 
 def tg_start(update: Update, context: CallbackContext) -> None:
