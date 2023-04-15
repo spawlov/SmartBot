@@ -40,7 +40,7 @@ def main():
         rotation='0:00',
         compression='zip',
     )
-    logger.add(tg_handler, level='INFO')
+    logger.add(tg_handler, level='WARNING')
     intents_update()
     Thread(target=_vk_bot).start()
     Thread(target=_tg_bot).start()
