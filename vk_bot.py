@@ -92,7 +92,7 @@ def _vk_bot() -> None:
         'wait': 25,
         'version': 3,
     }
-    logger.info('VK bot is running!')
+    logger.warning('VK bot is running!')
     attempt_connect = 0
     while True:
         try:

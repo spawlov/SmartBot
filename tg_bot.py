@@ -34,4 +34,4 @@ def _tg_bot() -> None:
         MessageHandler(Filters.text & ~Filters.command, tg_echo)
     )
     tg_bot.start_polling()
-    logger.info('Telegram bot is running!')
+    logger.warning('Telegram bot is running!')
