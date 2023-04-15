@@ -5,9 +5,9 @@ from dotenv import load_dotenv, find_dotenv
 from loguru import logger
 from notifiers.logging import NotificationHandler
 
-from dialog_flow import intents_update
-from tg_bot import _tg_bot
-from vk_bot import _vk_bot
+from modules.dialog_flow import intents_update
+from modules.tg_bot import _tg_bot
+from modules.vk_bot import _vk_bot
 
 logger.remove()
 
