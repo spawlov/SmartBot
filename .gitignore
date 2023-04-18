@@ -1,7 +1,7 @@
 /.idea
 /venv
 /.env
-/application_default_credentials.json
+/.credentials.json
 /debug.log
 /error.log
 /info.log

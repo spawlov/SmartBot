@@ -6,10 +6,10 @@ from loguru import logger
 from notifiers.logging import NotificationHandler
 
 from modules.dialog_flow import intents_update
-from modules.tg_bot import _tg_bot
-from modules.vk_bot import _vk_bot
+from modules.telegram import tg_bot
+from modules.vkontakte import vk_bot
 
-logger.remove()
+# logger.remove()
 
 
 def main():
@@ -40,10 +40,14 @@ def main():
         rotation='0:00',
         compression='zip',
     )
-    logger.add(tg_handler, level='WARNING')
-    intents_update()
-    Thread(target=_vk_bot).start()
-    Thread(target=_tg_bot).start()
+    # logger.add(tg_handler, level='WARNING')
+    intents_update(os.getenv('PROJECT_ID'), os.getenv('QUESTIONS_URL'))
+    Thread(
+        target=vk_bot, args=(os.getenv('PROJECT_ID'), os.getenv('VK_TOKEN'))
+    ).start()
+    Thread(
+        target=tg_bot, args=(os.getenv('TG_BOT_TOKEN'),)
+    ).start()
 
 
 if __name__ == '__main__':

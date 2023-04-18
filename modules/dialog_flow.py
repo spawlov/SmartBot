@@ -1,15 +1,14 @@
-import os
-import uuid
-
 import requests
 from google.cloud import dialogflow
-from google.cloud.dialogflow_v2 import Intent
+from google.cloud.dialogflow_v2 import Intent, QueryResult
 from loguru import logger
 
 
-def detect_intent_texts(project_id: str, text: str, bot: str = 'tg') -> str:
+def detect_intent_texts(
+        project_id: str, text: str, session_id: str
+) -> QueryResult:
     session_client = dialogflow.SessionsClient()
-    session = session_client.session_path(project_id, str(uuid.uuid4()))
+    session = session_client.session_path(project_id, session_id)
     text_input = dialogflow.TextInput(
         {
             'text': text,
@@ -27,9 +26,7 @@ def detect_intent_texts(project_id: str, text: str, bot: str = 'tg') -> str:
             'query_input': query_input,
         }
     )
-    if bot == 'vk' and response.query_result.intent.is_fallback:
-        return ''
-    return response.query_result.fulfillment_text
+    return response.query_result
 
 
 def get_intents_list(project_id: str) -> list:
@@ -87,11 +84,10 @@ def create_intent(
     )
 
 
-def intents_update() -> None:
-    project_id = os.getenv('PROJECT_ID')
+def intents_update(project_id: str, questions_url: str) -> None:
     intents_list = get_intents_list(project_id)
     try:
-        response = requests.get(os.getenv('QUESTIONS_URL'))
+        response = requests.get(questions_url)
         response.raise_for_status()
     except (
             requests.exceptions.ReadTimeout,
