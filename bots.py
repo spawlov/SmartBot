@@ -9,7 +9,7 @@ from modules.dialog_flow import intents_update
 from modules.telegram import tg_bot
 from modules.vkontakte import vk_bot
 
-# logger.remove()
+logger.remove()
 
 
 def main():
@@ -40,7 +40,7 @@ def main():
         rotation='0:00',
         compression='zip',
     )
-    # logger.add(tg_handler, level='WARNING')
+    logger.add(tg_handler, level='WARNING')
     intents_update(os.getenv('PROJECT_ID'), os.getenv('QUESTIONS_URL'))
     Thread(
         target=vk_bot, args=(os.getenv('PROJECT_ID'), os.getenv('VK_TOKEN'))
