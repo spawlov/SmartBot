@@ -5,9 +5,9 @@ from dotenv import load_dotenv, find_dotenv
 from loguru import logger
 from notifiers.logging import NotificationHandler
 
-from modules.dialog_flow import intents_update
-from modules.telegram import tg_bot
-from modules.vkontakte import vk_bot
+from chat_bots.dialog_flow import intents_update
+from chat_bots.telegram import tg_bot
+from chat_bots.vkontakte import vk_bot
 
 logger.remove()
 
@@ -46,7 +46,9 @@ def main():
         target=vk_bot, args=(os.getenv('PROJECT_ID'), os.getenv('VK_TOKEN'))
     ).start()
     Thread(
-        target=tg_bot, args=(os.getenv('TG_BOT_TOKEN'),)
+        target=tg_bot, args=(
+            os.getenv('PROJECT_ID'), os.getenv('TG_BOT_TOKEN')
+        )
     ).start()
 
 

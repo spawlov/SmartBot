@@ -5,7 +5,7 @@ import vk_api as vk
 from vk_api.longpoll import VkLongPoll, VkEventType
 from loguru import logger
 
-from modules.dialog_flow import detect_intent_texts
+from chat_bots.dialog_flow import detect_intent_texts
 
 
 def vk_send_message(event, vk_api, project_id) -> None:
